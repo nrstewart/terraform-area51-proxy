@@ -51,17 +51,6 @@ resource "openstack_compute_secgroup_v2" "proxy" {
   }
 }
 
-resource "openstack_compute_secgroup_v2" "internal" {
-  name = "internal"
-  description = "Permits access from proxy group on all ports"
-  rule {
-    from_port = 1
-    to_port = 65535
-    ip_protocol = "tcp"
-    from_group_id = "${openstack_compute_secgroup_v2.proxy.id}"
-  }
-}
-
 resource "openstack_networking_network_v2" "fwf_net" {
   name = "comforting_illusion_of_reality"
   admin_state_up = "true"
