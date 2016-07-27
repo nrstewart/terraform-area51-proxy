@@ -8,6 +8,8 @@ my_ip=$(ip a | grep -A3 eth0: | grep inet | awk {'print $2'} | awk -F\/ {'print 
 sudo echo "iptables -t nat -A POSTROUTING -p tcp ! -s 10.3.0.0/16 -d 10.3.0.0/16 -j SNAT --to ${my_ip}" >> /etc/rac-iptables.sh
 sudo echo "iptables -A FORWARD -i eth0 -o eth1 -m state --state RELATED,ESTABLISHED -j ACCEPT" >> /etc/rac-iptables.sh
 sudo echo "iptables -A FORWARD -i eth1 -o eth0 -j ACCEPT" >> /etc/rac-iptables.sh
+sudo sed -i '/^#\(.*\)ipv6.conf.all.forwarding/s/^#//' /etc/sysctl.conf
+sysctl -w net.ipv6.conf.all.forwarding=1
 sudo /usr/local/bin/proxyServer
 echo " ====> disable port security and port security-groups for proxy internal interface"
 source ~/openrc

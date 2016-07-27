@@ -37,6 +37,18 @@ resource "openstack_compute_secgroup_v2" "proxy" {
     ip_protocol = "tcp"
     cidr = "::/0"
   }
+  rule {
+    from_port = 2500
+    to_port = 2500
+    ip_protocol = "tcp"
+    cidr = "0.0.0.0/0"
+  }
+  rule {
+    from_port = 2500
+    to_port = 2500
+    ip_protocol = "tcp"
+    cidr = "::/0"
+  }
 }
 
 resource "openstack_compute_secgroup_v2" "internal" {
@@ -124,13 +136,6 @@ resource "openstack_compute_instance_v2" "proxy" {
     host = "${openstack_compute_instance_v2.proxy.access_ip_v4}"
     private_key = "~/.ssh/id_rsa.dec"
   }
-  provisioner "remote-exec" {
-    inline = [
-      "sudo apt-get update && sudo apt-get install -y git",
-      "git clone https://github.com/nrstewart/dotfiles dot && /home/ubuntu/dot/makesymlinks.sh",
-      "sudo -H git clone https://github.com/nrstewart/dotfiles /root/dot && sudo -H /root/dot/makesymlinks.sh"
-    ]
-  }
   provisioner "file" {
     source = "files/openrc"
     destination = "/home/ubuntu/openrc"
@@ -141,15 +146,19 @@ resource "openstack_compute_instance_v2" "proxy" {
    }
   provisioner "file" {
     source = "~/.ssh/id_rsa.dec"
-    destination = "/home/ubuntu/.ssh/id_rsa.dec"
+    destination = "/home/ubuntu/.ssh/id_rsa"
    }
   provisioner "file" {
     source = "files/eth1.cfg"
     destination = "/home/ubuntu/eth1.cfg"
    }
+  provisioner "file" {
+    source = "files/ssh_config"
+    destination = "/home/ubuntu/.ssh/config"
+   }
   provisioner "remote-exec" {
     inline = [
-      "chmod 700 ~/.ssh/id_rsa.dec",
+      "chmod 700 ~/.ssh/id_rsa",
       "chmod +x ~/proxy.sh",
       "~/proxy.sh"
     ]
@@ -184,14 +193,16 @@ resource "openstack_compute_instance_v2" "peer_1" {
     destination = "/home/ubuntu/.ssh/id_rsa"
    }
   provisioner "file" {
+    source = "files/ssh_config"
+    destination = "/home/ubuntu/.ssh/config"
+   }
+  provisioner "file" {
     source = "bootstrap/passthrough.sh"
     destination = "/home/ubuntu/passthrough.sh"
    }
   provisioner "remote-exec" {
     inline = [
-      "sudo apt-get update && sudo apt-get install -y git",
-      "git clone https://github.com/nrstewart/dotfiles dot && /home/ubuntu/dot/makesymlinks.sh",
-      "sudo -H git clone https://github.com/nrstewart/dotfiles /root/dot && sudo -H /root/dot/makesymlinks.sh",
+      "chmod 700 ~/.ssh/id_rsa",
       "chmod +x ~/passthrough.sh",
       "~/passthrough.sh"
     ]
@@ -219,11 +230,23 @@ resource "openstack_compute_instance_v2" "box" {
     host = "${openstack_compute_instance_v2.box.access_ip_v4}"
     private_key = "~/.ssh/id_rsa.dec"
   }
+  provisioner "file" {
+    source = "~/.ssh/id_rsa.dec"
+    destination = "/home/ubuntu/.ssh/id_rsa"
+   }
+  provisioner "file" {
+    source = "files/ssh_config"
+    destination = "/home/ubuntu/.ssh/config"
+   }
+  provisioner "file" {
+    source = "bootstrap/passthrough.sh"
+    destination = "/home/ubuntu/passthrough.sh"
+   }
   provisioner "remote-exec" {
     inline = [
-      "sudo apt-get update && sudo apt-get install -y git",
-      "git clone https://github.com/nrstewart/dotfiles dot && /home/ubuntu/dot/makesymlinks.sh",
-      "sudo -H git clone https://github.com/nrstewart/dotfiles /root/dot && sudo -H /root/dot/makesymlinks.sh"
+      "chmod 700 ~/.ssh/id_rsa",
+      "chmod +x ~/passthrough.sh",
+      "~/passthrough.sh"
     ]
    }
 }
@@ -249,13 +272,25 @@ resource "openstack_compute_instance_v2" "piaf" {
     host = "${openstack_compute_instance_v2.piaf.access_ip_v4}"
     private_key = "~/.ssh/id_rsa.dec"
   }
+  provisioner "file" {
+    source = "~/.ssh/id_rsa.dec"
+    destination = "/home/ubuntu/.ssh/id_rsa"
+   }
+  provisioner "file" {
+    source = "files/ssh_config"
+    destination = "/home/ubuntu/.ssh/config"
+   }
+  provisioner "file" {
+    source = "bootstrap/passthrough.sh"
+    destination = "/home/ubuntu/passthrough.sh"
+   }
   provisioner "remote-exec" {
     inline = [
-      "sudo apt-get update && sudo apt-get install -y git",
-      "git clone https://github.com/nrstewart/dotfiles dot && /home/ubuntu/dot/makesymlinks.sh",
-      "sudo -H git clone https://github.com/nrstewart/dotfiles /root/dot && sudo -H /root/dot/makesymlinks.sh"
+      "chmod 700 ~/.ssh/id_rsa",
+      "chmod +x ~/passthrough.sh",
+      "~/passthrough.sh"
     ]
-  }
+   }
 }
 
 resource "openstack_compute_instance_v2" "xmpp" {
@@ -279,11 +314,23 @@ resource "openstack_compute_instance_v2" "xmpp" {
     host = "${openstack_compute_instance_v2.xmpp.access_ip_v4}"
     private_key = "~/.ssh/id_rsa.dec"
   }
+  provisioner "file" {
+    source = "~/.ssh/id_rsa.dec"
+    destination = "/home/ubuntu/.ssh/id_rsa"
+   }
+  provisioner "file" {
+    source = "files/ssh_config"
+    destination = "/home/ubuntu/.ssh/config"
+   }
+  provisioner "file" {
+    source = "bootstrap/passthrough.sh"
+    destination = "/home/ubuntu/passthrough.sh"
+   }
   provisioner "remote-exec" {
     inline = [
-      "sudo apt-get update && sudo apt-get install -y git",
-      "git clone https://github.com/nrstewart/dotfiles dot && /home/ubuntu/dot/makesymlinks.sh",
-      "sudo -H git clone https://github.com/nrstewart/dotfiles /root/dot && sudo -H /root/dot/makesymlinks.sh"
+      "chmod 700 ~/.ssh/id_rsa",
+      "chmod +x ~/passthrough.sh",
+      "~/passthrough.sh"
     ]
-  }
+   }
 }

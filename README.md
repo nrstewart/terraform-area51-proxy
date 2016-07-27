@@ -1,6 +1,6 @@
-# Project Title
+# Rapid Access Cloud - Area51 proxy access model
 
-One Paragraph of project description goes here
+Use this Terraform script as a template to build networks and instances within the Rapid Access Cloud Experimental Region (Area51).
 
 ## Getting Started
 
@@ -11,7 +11,8 @@ These instructions will get you a copy of the project up and running on your loc
 What things you need to install the software and how to install them
 
 ```
-Give examples
+ * Rapid Access Cloud account
+ * Hashicorp Terraform
 ```
 
 ### Installing
