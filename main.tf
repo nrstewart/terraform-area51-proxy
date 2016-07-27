@@ -57,7 +57,7 @@ resource "openstack_networking_network_v2" "fwf_net" {
 }
 
 resource "openstack_networking_subnet_v2" "fwf_subnet" {
-  name = "Earth"
+  name = "Essex_County"
   network_id = "${openstack_networking_network_v2.fwf_net.id}"
   ip_version = 4
   cidr = "192.168.1.0/24"
@@ -205,7 +205,6 @@ resource "openstack_compute_instance_v2" "box" {
   key_pair = "neil"
   security_groups = [
     "default",
-    "${openstack_compute_secgroup_v2.internal.name}"
   ]
   network {
     uuid = "${openstack_networking_subnet_v2.sec_subnet.network_id}"
@@ -247,7 +246,6 @@ resource "openstack_compute_instance_v2" "piaf" {
   key_pair = "neil"
   security_groups = [
     "default",
-    "${openstack_compute_secgroup_v2.internal.name}"
   ]
   network {
     uuid = "${openstack_networking_subnet_v2.sec_subnet.network_id}"
@@ -289,7 +287,6 @@ resource "openstack_compute_instance_v2" "xmpp" {
   key_pair = "neil"
   security_groups = [
     "default",
-    "${openstack_compute_secgroup_v2.internal.name}"
   ]
   network {
     uuid = "${openstack_networking_subnet_v2.sec_subnet.network_id}"
